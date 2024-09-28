@@ -82,16 +82,37 @@ Here is an example of how JSON is validated in the hiring workflow.
 
 ### JSON Example:
 
-```json
+Here is an example of how the JSON validation is done in the hiring workflow.
+
+```java
 {
   "applicantName": "John Doe",
   "position": "Developer",
-  "status": "In Progress"
+  "status": "In Progress",
+  "age": 25,
+  "experience": true,
+  "desired_salary": 50000
 }
 ```
-You can validate the structure and fields with the following methods:
+
+You can validate the structure and fields as follows:
+
+ - Validating Candidates' Age: The system checks if candidates are over a certain age to proceed to the next step of the hiring process.
+- Checking Company Eligibility: The system validates whether the candidates meet the company's requirements, such as minimum age and salary expectations.
+
+### Example Code Snippet:
 
 ```java
-boolean isStructureValid = ComponentAwaiter.validateJsonStructure(hiringProcessJson);
-boolean isFieldPresent = ComponentAwaiter.validateJsonField(hiringProcessJson, "applicantName");
+JSONArray applicants = response.getJSONArray("applicants");
+for (Object applicant : applicants) {
+    if (applicant instanceof JSONObject) {
+        int age = ((JSONObject) applicant).getInt("age");
+        boolean experience = ((JSONObject) applicant).getBoolean("experience");
+        if (age > 18 && experience) {
+            System.out.println("The candidate is eligible.");
+        }
+    }
+}
 ```
+
+This process ensures that the JSON data is validated according to the business logic, filtering candidates based on age, experience, and company requirements.
